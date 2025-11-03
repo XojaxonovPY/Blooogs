@@ -18,9 +18,9 @@ class DatabaseConfig:
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 
-@dataclass
-class RedisConfig:
-    REDIS_URL: str = os.getenv("REDIS_URL")
+# @dataclass
+# class RedisConfig:
+#     REDIS_URL: str = os.getenv("REDIS_URL")
 
 
 @dataclass
@@ -39,7 +39,7 @@ class BotConfig:
 @dataclass
 class Configuration:
     db = DatabaseConfig()
-    redis = RedisConfig()
+    # redis = RedisConfig()
     bot = BotConfig()
     email = EmailConfig()
 

@@ -1,6 +1,7 @@
 import re
 
 from django.contrib.auth.hashers import make_password
+from django.core.cache import cache
 from django.core.validators import validate_email, RegexValidator
 from orjson import orjson
 from rest_framework.exceptions import ValidationError
@@ -8,7 +9,6 @@ from rest_framework.fields import CharField
 from rest_framework.serializers import ModelSerializer, Serializer
 
 from authentication.models import User, Follow, Notifications, Sessions
-from root.settings import redis
 
 
 class UserModelSerializer(ModelSerializer):
@@ -65,7 +65,7 @@ class VerifyCodeSerializer(Serializer):
     code = CharField(max_length=6)
 
     def validate_code(self, value):
-        data = redis.get(value)
+        data = cache.get(value)
         if not data:
             raise ValidationError("Code notog'ri")
         user_data = orjson.loads(data)

@@ -1,10 +1,10 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from celery import shared_task
+from django.core.cache import cache
 
 from root.settings import EMAIL_HOST_USER
 
-@shared_task
+# @shared_task
 def send_code_email(user_email: dict, code):
     subject = "Email Verification"
     from_email = EMAIL_HOST_USER

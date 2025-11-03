@@ -2,6 +2,7 @@ import random
 from http import HTTPStatus
 
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.shortcuts import render
 from django.utils.timezone import now
 from drf_spectacular.utils import extend_schema
@@ -20,7 +21,7 @@ from authentication.models import User, Sessions
 from authentication.serializers import UserModelSerializer, SessionModelSerializer
 from authentication.serializers import VerifyCodeSerializer
 from authentication.tasks import send_code_email
-from root.settings import redis, GOOGLE_CLIENT_ID,MAIN_URL
+from root.settings import GOOGLE_CLIENT_ID, MAIN_URL
 
 
 @extend_schema(tags=['auth'])
@@ -32,10 +33,14 @@ class UserGenericAPIView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
+
         code = str(random.randrange(10 ** 5, 10 ** 6))
-        send_code_email.delay(user, code)
-        redis.set(code, orjson.dumps(user))
-        return Response({'message': 'Tastiqlash kodi jonatilid'}, status=HTTPStatus.OK)
+        send_code_email(user, code)
+
+        # Redis o‘rniga cache
+        cache.set(code, orjson.dumps(user), timeout=300)  # 5 daqiqaga saqlanadi
+
+        return Response({'message': 'Tasdiqlash kodi jo‘natildi'}, status=HTTPStatus.OK)
 
 
 @extend_schema(tags=['auth'])
@@ -82,7 +87,7 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 
 def auth_google(request):
-    return render(request, 'auth.html', context={'client_id': GOOGLE_CLIENT_ID,'main_url':MAIN_URL})
+    return render(request, 'auth.html', context={'client_id': GOOGLE_CLIENT_ID, 'main_url': MAIN_URL})
 
 
 @extend_schema(tags=['auth'])
