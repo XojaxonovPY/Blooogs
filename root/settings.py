@@ -195,9 +195,9 @@ EMAIL_HOST_USER = EmailConfig.EMAIL_USER
 EMAIL_HOST_PASSWORD = EmailConfig.EMAIL_PASSWORD
 
 # =============================================celery==================================
-CELERY_BROKER_URL = getenv('REDIS_URL')
+# CELERY_BROKER_URL = getenv('REDIS_URL')
 
-CELERY_RESULT_BACKEND = getenv('REDIS_URL')
+# CELERY_RESULT_BACKEND = getenv('REDIS_URL')
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
