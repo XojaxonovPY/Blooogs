@@ -68,14 +68,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'root.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': DatabaseConfig.DB_NAME,
+#         'USER': DatabaseConfig.DB_USER,
+#         'PASSWORD': DatabaseConfig.DB_PASS,
+#         'HOST': DatabaseConfig.DB_HOST,
+#         'PORT': DatabaseConfig.DB_PORT,
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DatabaseConfig.DB_NAME,
-        'USER': DatabaseConfig.DB_USER,
-        'PASSWORD': DatabaseConfig.DB_PASS,
-        'HOST': DatabaseConfig.DB_HOST,
-        'PORT': DatabaseConfig.DB_PORT,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -190,5 +197,5 @@ CELERY_TIMEZONE = 'Asia/Tashkent'
 
 GOOGLE_CLIENT_ID = getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = getenv("GOOGLE_CLIENT_SECRET")
-MAIN_URL=getenv('MAIN_URL')
+MAIN_URL = getenv('MAIN_URL')
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
