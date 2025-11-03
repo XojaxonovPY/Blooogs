@@ -1,0 +1,4 @@
+.venv
+.idea
+db.sqlite3
+SERVER_CONFIG

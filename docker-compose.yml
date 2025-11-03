@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    image: blog
+    container_name: blog_con
+    restart: always
+    command: >
+      sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:alpine
+    container_name: pg2
+    restart: always
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_PASSWORD: 1
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  celery:
+    build: .
+    image: celery_blog
+    container_name: celery_con
+    restart: always
+    command: celery -A instruments.tasks:app worker --loglevel=info --pool=solo
+    depends_on:
+      - rd
+
+  rd:
+    image: redis:alpine
+    container_name: rd2
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  pg_data:
+  redis_data:

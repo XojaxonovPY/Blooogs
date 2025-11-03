@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<h2>Google Login</h2>
+<div id="google-login-btn"></div>
+
+<!-- Backenddan qaytgan qiymatlar -->
+<div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ddd;"></div>
+
+<script>
+    function handleCallbackResponse(response) {
+        const token = response.credential;
+
+        // Backend’ga token yuborish
+        fetch("{{ main_url }}api/v1/auth/google/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({token})
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Backend javobi:", data);
+
+                // HTML ichiga chiqarish
+                document.getElementById("result").innerHTML = `
+                    <p><strong>Access token:</strong> ${data.access || '-'}</p>
+                    <p><strong>Refresh token:</strong> ${data.refresh || '-'}</p>
+                `;
+            })
+            .catch(err => {
+                console.error("Xatolik:", err);
+                document.getElementById("result").innerHTML = "<p style='color:red;'>Xatolik yuz berdi</p>";
+            });
+    }
+
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "{{ client_id }}",
+            callback: handleCallbackResponse
+        });
+
+        google.accounts.id.renderButton(
+            document.getElementById("google-login-btn"),
+            {theme: "outline", size: "large"}
+        );
+    }
+</script>
+</body>
+</html>
