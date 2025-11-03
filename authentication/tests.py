@@ -28,7 +28,7 @@ class TestUser:
         }
         response = client.post('/api/v1/register/', data, format='json')
         assert 200 <= response.status_code < 300, f'Bad request {response.data}'
-        assert response.data['message'] == 'Tastiqlash kodi jonatilid', 'This not true massage'
+        assert response.data['message'] == 'Tasdiqlash kodi jonatilid', 'This not true massage'
 
     @pytest.mark.django_db
     def test_login(self, client):
