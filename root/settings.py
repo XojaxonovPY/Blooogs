@@ -179,7 +179,7 @@ CKEDITOR_CONFIGS = {
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
 
-redis = Redis.from_url(getenv('REDIS_URL'), decode_responses=True)
+# redis = Redis.from_url(getenv('REDIS_URL'), decode_responses=True)
 
 SITE_ID = 1
 
