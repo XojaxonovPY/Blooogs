@@ -24,3 +24,13 @@ def apps(c):
 @task
 def celery(c):
     c.run("celery -A root worker --loglevel=info --pool=solo")
+
+
+@task
+def load(c):
+    c.run("python manage.py loaddata  user.json ")
+
+
+@task
+def dump(c):
+    c.run("python manage.py dumpdata authentication.user > user.json")

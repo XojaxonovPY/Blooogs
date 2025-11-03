@@ -35,10 +35,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     # filter
     'django_filters',
+    # prometheus
+    'django_prometheus'
 
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -47,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware'
+
 ]
 
 ROOT_URLCONF = 'root.urls'
@@ -126,7 +131,6 @@ CACHES = {
         "LOCATION": BASE_DIR / "django_cache",
     }
 }
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
